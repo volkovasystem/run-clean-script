@@ -1,0 +1,39 @@
+{
+	"name": "@volkovasystem/run-clean-script",
+	"version": "0.0.0",
+	"description": "Run NPM based clean script.",
+	"main": "run-clean-script.js",
+	"scripts": {
+		"clean": "rm -rfv ./node_modules || true && rm -fv ./package-lock.json || true && npm cache clean --force",
+		"reset": "npm run clean && rm -rfv ./run-clean-script.js || true && rm -rfv ./.build || true",
+		"bundle": "npx parcel build ./*.module.js --no-cache --no-source-maps --no-minify --target node --out-dir ./.build --out-file ./run-clean-script.js --global runCleanScript && mv ./.build/run-clean-script.js ./run-clean-script.js && rm -rfv ./.build || true",
+		"compress": "npx terser ./run-clean-script.js --compress --output ./run-clean-script.js",
+		"build": "npm run bundle && npm run compress",
+		"test": "node ./run-clean-script.test.js",
+		"stage": "npm run reset && npm install && npm run build && npm test && npm run clean",
+		"prepublishOnly": "npm run stage",
+		"run-clean-script": "node ./run-clean-script.run.js"
+	},
+	"bin": {
+		"run-clean-script": "run-clean-script.run.js"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/volkovasystem/run-clean-script.git"
+	},
+	"keywords": [
+		"run-clean-script",
+		"run",
+		"clean",
+		"script"
+	],
+	"author": "Richeve S. Bebedor <richeve.bebedor@gmail.com>",
+	"contributors": [
+		"Richeve S. Bebedor <richeve.bebedor@gmail.com>"
+	],
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/volkovasystem/run-clean-script/issues"
+	},
+	"homepage": "https://github.com/volkovasystem/run-clean-script#readme"
+}
