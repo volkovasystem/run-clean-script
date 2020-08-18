@@ -1,6 +1,6 @@
 {
 	"name": "@volkovasystem/run-clean-script",
-	"version": "0.0.0",
+	"version": "0.0.1",
 	"description": "Run NPM based clean script.",
 	"main": "run-clean-script.js",
 	"scripts": {
