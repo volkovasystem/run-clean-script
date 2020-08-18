@@ -215,6 +215,7 @@ const runCleanScript = (
 									@end-type
 
 									<@tag:invalid-module-directory-path;>
+									<@tag:undefined-module-directory;>
 									<@tag:cannot-run-clean-script;>
 								]
 							"
@@ -235,30 +236,7 @@ const runCleanScript = (
 									.length
 								>	1
 							)
-
-						&&	(
-									(
-										await	fsAsync
-												.stat(
-													(
-														moduleDirectoryPath
-													)
-												)
-									)
-									.isDirectory( )
-								===	true
-							)
 					){
-						option = (
-								(
-									option
-								)
-
-							||	(
-									{ }
-								)
-						);
-
 							moduleDirectoryPath
 						=	(
 								path
@@ -269,30 +247,72 @@ const runCleanScript = (
 								)
 							);
 
-						const cleanScript = (
-							BASIC_CLEAN_SCRIPT
-							.replace(
+						if(
 								(
-									MODULE_DIRECTORY_PATH_REPLACER_PATTERN
-								),
-
-								(
-									moduleDirectoryPath
+										(
+											await	fsAsync
+													.stat(
+														(
+															moduleDirectoryPath
+														)
+													)
+										)
+										.isDirectory( )
+									===	true
 								)
-							)
-						);
+						){
+							option = (
+									(
+										option
+									)
 
-						return	(
-									await	executeScript(
-												(
-													moduleDirectoryPath
-												),
+								||	(
+										{ }
+									)
+							);
 
+							const cleanScript = (
+								BASIC_CLEAN_SCRIPT
+								.replace(
+									(
+										MODULE_DIRECTORY_PATH_REPLACER_PATTERN
+									),
+
+									(
+										moduleDirectoryPath
+									)
+								)
+							);
+
+							return	(
+										await	executeScript(
+													(
+														moduleDirectoryPath
+													),
+
+													(
+														cleanScript
+													)
+												)
+									);
+						}
+						else{
+							throw	(
+										new	Error(
 												(
-													cleanScript
+													[
+														"#undefined-module-directory;",
+
+														"cannot run clean script;",
+														"undefined module directory;",
+
+														"@module-directory-path:",
+														`${ moduleDirectoryPath };`
+													]
 												)
 											)
-								);
+									);
+						}
 					}
 					else{
 						throw	(
